@@ -13,22 +13,54 @@ import { useGlobalContext } from '../context';
 
 const AlertTable = () => {
   //get context stuff as needed
-  const { data, checkAll } = useGlobalContext();
+  const { data, checkAll, sortData } = useGlobalContext();
 
   return (
     <RuxTable>
       <RuxTableHeader>
         <RuxTableHeaderRow>
           <RuxTableHeaderCell>
-            <RuxCheckbox onClick={checkAll} />{' '}
-            <RuxIcon size='small' icon='arrow-drop-down' />
+            <RuxCheckbox onClick={checkAll} />
+            <RuxIcon
+              size='small'
+              icon='arrow-drop-down'
+              onClick={() => sortData('complete')}
+            />
           </RuxTableHeaderCell>
-          <RuxTableHeaderCell>Severity</RuxTableHeaderCell>
-          <RuxTableHeaderCell>Error Time (UTC)</RuxTableHeaderCell>
+          <RuxTableHeaderCell>
+            Severity
+            <RuxIcon
+              size='small'
+              icon='arrow-drop-down'
+              onClick={() => sortData('errorSeverity')}
+            />
+          </RuxTableHeaderCell>
+          <RuxTableHeaderCell>
+            Error Time (UTC)
+            <RuxIcon
+              size='small'
+              icon='arrow-drop-down'
+              onClick={() => sortData('errorTime')}
+            />
+          </RuxTableHeaderCell>
           <RuxTableHeaderCell>Alert message</RuxTableHeaderCell>
           <RuxTableHeaderCell>Contact Name</RuxTableHeaderCell>
-          <RuxTableHeaderCell>Category</RuxTableHeaderCell>
-          <RuxTableHeaderCell>Contact Time (UTC)</RuxTableHeaderCell>
+          <RuxTableHeaderCell>
+            Category
+            <RuxIcon
+              size='small'
+              icon='arrow-drop-down'
+              onClick={() => sortData('errorCategory')}
+            />
+          </RuxTableHeaderCell>
+          <RuxTableHeaderCell>
+            Contact Time (UTC)
+            <RuxIcon
+              size='small'
+              icon='arrow-drop-down'
+              onClick={() => sortData('contactTime')}
+            />
+          </RuxTableHeaderCell>
           <RuxTableHeaderCell></RuxTableHeaderCell>
         </RuxTableHeaderRow>
       </RuxTableHeader>

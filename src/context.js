@@ -52,6 +52,10 @@ const AppProvider = ({ children }) => {
     });
   };
 
+  const sortData = (type) => {
+    console.log('this kind! ', type);
+  };
+
   //is the row complete or not?
   const checkChecked = (e, satAlert) => {
     //let me decide when it gets checked
@@ -159,6 +163,7 @@ const AppProvider = ({ children }) => {
         getModal,
         checkChecked,
         checkAll,
+        sortData,
       }}
     >
       {children}
