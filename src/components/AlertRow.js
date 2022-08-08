@@ -12,6 +12,17 @@ import { useGlobalContext } from '../context';
 const AlertRow = ({ satAlert }) => {
   //get context stuff as needed
   const { checkChecked, formatDate, getModal } = useGlobalContext();
+
+  const err = satAlert.errorSeverity;
+  const status =
+    err === 'critical' ||
+    err === 'caution' ||
+    err === 'serious' ||
+    err === 'normal' ||
+    err === 'standby' ||
+    err === 'off'
+      ? err
+      : undefined;
   return (
     <RuxTableRow
       selected='false'
@@ -27,9 +38,7 @@ const AlertRow = ({ satAlert }) => {
           checked={satAlert.complete ? true : false}
         />
       </RuxTableCell>
-      <RuxTableCell>
-        <RuxStatus status={satAlert.errorSeverity} />
-      </RuxTableCell>
+      <RuxTableCell>{status && <RuxStatus status={status} />}</RuxTableCell>
       <RuxTableCell>{formatDate(satAlert.errorTime, true)}</RuxTableCell>
       <RuxTableCell>{satAlert.errorMessage}</RuxTableCell>
       <RuxTableCell>{satAlert.contactName}</RuxTableCell>

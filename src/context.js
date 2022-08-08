@@ -52,28 +52,46 @@ const AppProvider = ({ children }) => {
     });
   };
 
+  /*----------------------Sorting Stuff-------------------*/
+  //sort the table rows
   const sortData = (type) => {
-    console.log('this kind! ', type);
+    let newData = data;
+    //numerical types
     if (
-      type === 'errorCategory' ||
       type === 'contactBeginTimestamp' ||
       type === 'contactName' ||
       type === 'errorTime'
     ) {
-      console.log('sorting...');
-      const newData = [...data].sort((a, b) => {
-        console.log(a[type]);
+      newData = [...data].sort((a, b) => {
         return a[type] - b[type];
       });
-      setData(newData);
     }
+    //alphabetical type
+    if (type === 'errorCategory') {
+      newData = [...data].sort((a, b) => a[type].localeCompare(b[type]));
+    }
+    //boolean type
+    if (type === 'complete') {
+      newData = [
+        ...data.sort((a, b) => Number(a.complete) - Number(b.complete)),
+      ];
+    }
+    //severity special sort
+    if (type === 'errorSeverity') {
+      const order = ['critical', 'serious', 'caution', 'warning'];
+      newData = [...data].sort(
+        (a, b) => order.indexOf(a[type]) - order.indexOf(b[type])
+      );
+    }
+    setData(newData);
   };
+
+  /*-------------------Checkbox Stuff ----------------------*/
 
   //is the row complete or not?
   const checkChecked = (e, satAlert) => {
     //let me decide when it gets checked
     e.preventDefault();
-    console.log(satAlert);
     let newData = data;
     if (!e.target.checked) {
       //if its not already checked
