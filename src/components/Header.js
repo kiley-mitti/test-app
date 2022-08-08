@@ -1,3 +1,4 @@
+import React from 'react';
 import { RuxGlobalStatusBar, RuxClock } from '@astrouxds/react';
 import { useGlobalContext } from '../context';
 
