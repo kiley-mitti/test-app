@@ -35,5 +35,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "stackblitz": {
+    "installDependencies": true,
+    "startCommand": "npm start"
   }
 }

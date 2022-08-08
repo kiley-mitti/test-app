@@ -44,7 +44,14 @@ const AlertTable = () => {
             />
           </RuxTableHeaderCell>
           <RuxTableHeaderCell>Alert message</RuxTableHeaderCell>
-          <RuxTableHeaderCell>Contact Name</RuxTableHeaderCell>
+          <RuxTableHeaderCell>
+            Contact Name
+            <RuxIcon
+              size='small'
+              icon='arrow-drop-down'
+              onClick={() => sortData('contactName')}
+            />
+          </RuxTableHeaderCell>
           <RuxTableHeaderCell>
             Category
             <RuxIcon
@@ -58,7 +65,7 @@ const AlertTable = () => {
             <RuxIcon
               size='small'
               icon='arrow-drop-down'
-              onClick={() => sortData('contactTime')}
+              onClick={() => sortData('contactBeginTimestamp')}
             />
           </RuxTableHeaderCell>
           <RuxTableHeaderCell></RuxTableHeaderCell>

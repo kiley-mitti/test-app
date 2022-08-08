@@ -54,6 +54,19 @@ const AppProvider = ({ children }) => {
 
   const sortData = (type) => {
     console.log('this kind! ', type);
+    if (
+      type === 'errorCategory' ||
+      type === 'contactBeginTimestamp' ||
+      type === 'contactName' ||
+      type === 'errorTime'
+    ) {
+      console.log('sorting...');
+      const newData = [...data].sort((a, b) => {
+        console.log(a[type]);
+        return a[type] - b[type];
+      });
+      setData(newData);
+    }
   };
 
   //is the row complete or not?

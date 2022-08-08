@@ -22,8 +22,13 @@ rux-table-header{
     z-index: 100;
 }
 
-rux-table-header-cell{
-  align-items: center;
+rux-table-header-cell rux-icon{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  cursor: pointer;
+  align-items:center;
+
 }
 
 .active-alerts h1 {margin-bottom: 0;}
