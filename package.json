@@ -1,5 +1,5 @@
 {
-  "name": "@astrouxds/react-starter",
+  "name": "@astrouxds/react-starter-kiley-test",
   "version": "1.0.1",
   "bin": "init.js",
   "dependencies": {
@@ -11,6 +11,10 @@
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"
+  },
+  "stackblitz": {
+    "installDependencies": true,
+    "startCommand": "npm start"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,9 +39,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "stackblitz": {
-    "installDependencies": true,
-    "startCommand": "npm start"
   }
 }
