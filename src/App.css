@@ -22,6 +22,8 @@ rux-table-header{
     z-index: 100;
 }
 
+rux-table-header-cell{position:relative;}
+
 rux-table-header-cell rux-icon{
   position: absolute;
   top: 0;
