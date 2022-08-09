@@ -13,7 +13,7 @@ import { useGlobalContext } from '../context';
 
 const AlertTable = () => {
   //get context stuff as needed
-  const { data, checkAll, sortData } = useGlobalContext();
+  const { data, checkAll, sortData, sortState } = useGlobalContext();
 
   return (
     <RuxTable>
@@ -23,15 +23,17 @@ const AlertTable = () => {
             <RuxCheckbox onClick={checkAll} />
             <RuxIcon
               size='small'
-              icon='arrow-drop-down'
-              onClick={() => sortData('complete')}
+              icon={sortState.complete ? 'arrow-drop-up' : 'arrow-drop-down'}
+              onClick={(e) => sortData('complete')}
             />
           </RuxTableHeaderCell>
           <RuxTableHeaderCell>
             Severity
             <RuxIcon
               size='small'
-              icon='arrow-drop-down'
+              icon={
+                sortState.errorSeverity ? 'arrow-drop-up' : 'arrow-drop-down'
+              }
               onClick={() => sortData('errorSeverity')}
             />
           </RuxTableHeaderCell>
@@ -39,7 +41,7 @@ const AlertTable = () => {
             Error Time (UTC)
             <RuxIcon
               size='small'
-              icon='arrow-drop-down'
+              icon={sortState.errorTime ? 'arrow-drop-up' : 'arrow-drop-down'}
               onClick={() => sortData('errorTime')}
             />
           </RuxTableHeaderCell>
@@ -48,7 +50,7 @@ const AlertTable = () => {
             Contact Name
             <RuxIcon
               size='small'
-              icon='arrow-drop-down'
+              icon={sortState.contactName ? 'arrow-drop-up' : 'arrow-drop-down'}
               onClick={() => sortData('contactName')}
             />
           </RuxTableHeaderCell>
@@ -56,7 +58,9 @@ const AlertTable = () => {
             Category
             <RuxIcon
               size='small'
-              icon='arrow-drop-down'
+              icon={
+                sortState.errorCategory ? 'arrow-drop-up' : 'arrow-drop-down'
+              }
               onClick={() => sortData('errorCategory')}
             />
           </RuxTableHeaderCell>
@@ -64,7 +68,11 @@ const AlertTable = () => {
             Contact Time (UTC)
             <RuxIcon
               size='small'
-              icon='arrow-drop-down'
+              icon={
+                sortState.contactBeginTimestamp
+                  ? 'arrow-drop-up'
+                  : 'arrow-drop-down'
+              }
               onClick={() => sortData('contactBeginTimestamp')}
             />
           </RuxTableHeaderCell>

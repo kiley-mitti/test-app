@@ -10,9 +10,19 @@ const AppProvider = ({ children }) => {
     open: false,
   };
 
+  const initialSortStates = {
+    complete: false,
+    errorSeverity: false,
+    errorTime: false,
+    contactName: false,
+    errorCategory: false,
+    contactBeginTimestamp: false,
+  };
+
   //states go here
   const [data, setData] = useState([]);
   const [modalInfo, setModalInfo] = useState(modalInitial);
+  const [sortState, setSortState] = useState(initialSortStates);
 
   //functions go here
 
@@ -56,33 +66,41 @@ const AppProvider = ({ children }) => {
   //sort the table rows
   const sortData = (type) => {
     let newData = data;
+
     //numerical types
     if (
       type === 'contactBeginTimestamp' ||
       type === 'contactName' ||
       type === 'errorTime'
     ) {
-      newData = [...data].sort((a, b) => {
-        return a[type] - b[type];
-      });
+      newData = sortState[type]
+        ? [...data].sort((a, b) => a[type] - b[type])
+        : [...data].sort((a, b) => b[type] - a[type]);
     }
     //alphabetical type
     if (type === 'errorCategory') {
-      newData = [...data].sort((a, b) => a[type].localeCompare(b[type]));
+      newData = sortState[type]
+        ? [...data].sort((a, b) => b[type].localeCompare(a[type]))
+        : [...data].sort((a, b) => a[type].localeCompare(b[type]));
     }
     //boolean type
     if (type === 'complete') {
-      newData = [
-        ...data.sort((a, b) => Number(a.complete) - Number(b.complete)),
-      ];
+      newData = sortState[type]
+        ? [...data.sort((a, b) => Number(b.complete) - Number(a.complete))]
+        : [...data.sort((a, b) => Number(a.complete) - Number(b.complete))];
     }
     //severity special sort
     if (type === 'errorSeverity') {
       const order = ['critical', 'serious', 'caution', 'warning'];
-      newData = [...data].sort(
-        (a, b) => order.indexOf(a[type]) - order.indexOf(b[type])
-      );
+      newData = sortState[type]
+        ? [...data].sort(
+            (a, b) => order.indexOf(b[type]) - order.indexOf(a[type])
+          )
+        : [...data].sort(
+            (a, b) => order.indexOf(a[type]) - order.indexOf(b[type])
+          );
     }
+    setSortState({ ...sortState, [type]: !sortState[type] });
     setData(newData);
   };
 
@@ -111,14 +129,22 @@ const AppProvider = ({ children }) => {
 
   //check every alert
   const checkAll = (e) => {
+    e.preventDefault();
     if (!e.target.disabled) {
-      e.target.disabled = true;
-      const allChecked = data.map((current) => {
-        return { ...current, complete: true };
-      });
-      setData(allChecked);
-    } else {
-      return;
+      //popup confirmation
+      const confirm = window.confirm(
+        `Checking this box will mark all alerts complete. This action cannot be undone.`
+      );
+      if (confirm) {
+        e.target.checked = true;
+        e.target.disabled = true;
+        const allChecked = data.map((current) => {
+          return { ...current, complete: true };
+        });
+        setData(allChecked);
+      } else {
+        return;
+      }
     }
   };
 
@@ -195,6 +221,7 @@ const AppProvider = ({ children }) => {
         checkChecked,
         checkAll,
         sortData,
+        sortState,
       }}
     >
       {children}
