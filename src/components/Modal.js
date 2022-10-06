@@ -6,11 +6,7 @@ const Modal = () => {
   //get context stuff as needed
   const { modalInfo, setModalInfo, modalInitial } = useGlobalContext();
   return (
-    <RuxDialog
-      open={modalInfo.open ? true : false}
-      modal-message={`Message: ` + modalInfo.satDetail}
-      modal-title={`Satallite: ` + modalInfo.satName}
-    >
+    <RuxDialog open={modalInfo.open ? true : false} message={`Message: ` + modalInfo.satDetail} header={`Satallite: ` + modalInfo.satName}>
       <span slot='footer'>
         <RuxButton onClick={() => setModalInfo({ modalInitial })}>Ok</RuxButton>
       </span>
