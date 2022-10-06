@@ -5,6 +5,7 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   //initial states
   const modalInitial = {
+    contactId: '',
     satName: '',
     satDetail: '',
     open: false,
@@ -56,6 +57,7 @@ const AppProvider = ({ children }) => {
   //pop up modal with proper info
   const getModal = (satAlert) => {
     setModalInfo({
+      contactId: satAlert.contactId,
       satName: satAlert.contactSatellite,
       satDetail: satAlert.contactDetail,
       open: true,
@@ -68,43 +70,40 @@ const AppProvider = ({ children }) => {
     let newData = data;
 
     //numerical types
-    if (
-      type === 'contactBeginTimestamp' ||
-      type === 'contactName' ||
-      type === 'errorTime'
-    ) {
-      newData = sortState[type]
-        ? [...data].sort((a, b) => a[type] - b[type])
-        : [...data].sort((a, b) => b[type] - a[type]);
+    if (type === 'contactBeginTimestamp' || type === 'contactName' || type === 'errorTime') {
+      newData = sortState[type] ? [...data].sort((a, b) => a[type] - b[type]) : [...data].sort((a, b) => b[type] - a[type]);
     }
     //alphabetical type
     if (type === 'errorCategory') {
-      newData = sortState[type]
-        ? [...data].sort((a, b) => b[type].localeCompare(a[type]))
-        : [...data].sort((a, b) => a[type].localeCompare(b[type]));
+      newData = sortState[type] ? [...data].sort((a, b) => b[type].localeCompare(a[type])) : [...data].sort((a, b) => a[type].localeCompare(b[type]));
     }
     //boolean type
     if (type === 'complete') {
-      newData = sortState[type]
-        ? [...data.sort((a, b) => Number(b.complete) - Number(a.complete))]
-        : [...data.sort((a, b) => Number(a.complete) - Number(b.complete))];
+      newData = sortState[type] ? [...data.sort((a, b) => Number(b.complete) - Number(a.complete))] : [...data.sort((a, b) => Number(a.complete) - Number(b.complete))];
     }
     //severity special sort
     if (type === 'errorSeverity') {
       const order = ['critical', 'serious', 'caution', 'warning'];
-      newData = sortState[type]
-        ? [...data].sort(
-            (a, b) => order.indexOf(b[type]) - order.indexOf(a[type])
-          )
-        : [...data].sort(
-            (a, b) => order.indexOf(a[type]) - order.indexOf(b[type])
-          );
+      newData = sortState[type] ? [...data].sort((a, b) => order.indexOf(b[type]) - order.indexOf(a[type])) : [...data].sort((a, b) => order.indexOf(a[type]) - order.indexOf(b[type]));
     }
     setSortState({ ...sortState, [type]: !sortState[type] });
     setData(newData);
   };
 
   /*-------------------Checkbox Stuff ----------------------*/
+
+  const acknowledge = (contactId) => {
+    const newData = data.map((alert) => {
+      if (contactId === alert.contactId) {
+        console.log(alert);
+        return { ...alert, complete: true };
+      } else {
+        return alert;
+      }
+    });
+    setData(newData);
+    setModalInfo(modalInitial);
+  };
 
   //is the row complete or not?
   const checkChecked = (e, satAlert) => {
@@ -132,9 +131,7 @@ const AppProvider = ({ children }) => {
     e.preventDefault();
     if (!e.target.disabled) {
       //popup confirmation
-      const confirm = window.confirm(
-        `Checking this box will mark all alerts complete. This action cannot be undone.`
-      );
+      const confirm = window.confirm(`Checking this box will mark all alerts complete. This action cannot be undone.`);
       if (confirm) {
         e.target.checked = true;
         e.target.disabled = true;
@@ -158,27 +155,19 @@ const AppProvider = ({ children }) => {
       })
       .then((data) => {
         //look for satalites with alerts
-        const alertsOnly = data.filter(
-          (satallite) => satallite.alerts.length > 0
-        );
+        const alertsOnly = data.filter((satallite) => satallite.alerts.length > 0);
 
         //create a new alerts-forward array
         let alertsArray = [];
         for (let x in alertsOnly) {
           const alerts = alertsOnly[x].alerts;
-          const {
-            contactName,
-            contactBeginTimestamp,
-            contactEndTimestamp,
-            contactSatellite,
-            contactDetail,
-          } = alertsOnly[x];
+          const { contactId, contactName, contactBeginTimestamp, contactEndTimestamp, contactSatellite, contactDetail } = alertsOnly[x];
 
           //need to handle each instance of an alert so break them out
           for (let y in alerts) {
-            const { errorSeverity, errorMessage, errorCategory, errorTime } =
-              alerts[y];
+            const { errorSeverity, errorMessage, errorCategory, errorTime } = alerts[y];
             const newEntry = {
+              contactId,
               contactName,
               contactBeginTimestamp,
               contactEndTimestamp,
@@ -218,6 +207,7 @@ const AppProvider = ({ children }) => {
         modalInitial,
         formatDate,
         getModal,
+        acknowledge,
         checkChecked,
         checkAll,
         sortData,
