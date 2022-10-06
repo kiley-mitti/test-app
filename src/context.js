@@ -5,7 +5,7 @@ const AppContext = React.createContext();
 const AppProvider = ({ children }) => {
   //initial states
   const modalInitial = {
-    contactId: '',
+    alertId: '',
     satName: '',
     satDetail: '',
     open: false,
@@ -57,7 +57,7 @@ const AppProvider = ({ children }) => {
   //pop up modal with proper info
   const getModal = (satAlert) => {
     setModalInfo({
-      contactId: satAlert.contactId,
+      alertId: satAlert.alertId,
       satName: satAlert.contactSatellite,
       satDetail: satAlert.contactDetail,
       open: true,
@@ -92,9 +92,9 @@ const AppProvider = ({ children }) => {
 
   /*-------------------Checkbox Stuff ----------------------*/
 
-  const acknowledge = (contactId) => {
+  const acknowledge = (alertId) => {
     const newData = data.map((alert) => {
-      if (contactId === alert.contactId) {
+      if (alertId === alert.alertId) {
         console.log(alert);
         return { ...alert, complete: true };
       } else {
@@ -161,13 +161,14 @@ const AppProvider = ({ children }) => {
         let alertsArray = [];
         for (let x in alertsOnly) {
           const alerts = alertsOnly[x].alerts;
-          const { contactId, contactName, contactBeginTimestamp, contactEndTimestamp, contactSatellite, contactDetail } = alertsOnly[x];
+          const { contactName, contactBeginTimestamp, contactEndTimestamp, contactSatellite, contactDetail } = alertsOnly[x];
+          let alertId = alertsArray.length;
 
           //need to handle each instance of an alert so break them out
           for (let y in alerts) {
             const { errorSeverity, errorMessage, errorCategory, errorTime } = alerts[y];
             const newEntry = {
-              contactId,
+              alertId,
               contactName,
               contactBeginTimestamp,
               contactEndTimestamp,
@@ -180,6 +181,7 @@ const AppProvider = ({ children }) => {
               complete: false,
             };
             alertsArray.push(newEntry);
+            alertId = alertsArray.length;
           }
         }
 
@@ -187,6 +189,7 @@ const AppProvider = ({ children }) => {
         alertsArray = alertsArray.sort((a, b) => a.errorTime - b.errorTime);
         //set our new array
         setData(alertsArray);
+        console.log(alertsArray);
       })
       .catch((response) => console.log(response));
   }

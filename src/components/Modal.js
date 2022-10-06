@@ -9,7 +9,7 @@ const Modal = () => {
   console.log(modalInfo);
   const parseEvent = (e) => {
     if (e.detail) {
-      acknowledge(modalInfo.contactId);
+      acknowledge(modalInfo.alertId);
     } else {
       setModalInfo(modalInitial);
     }
