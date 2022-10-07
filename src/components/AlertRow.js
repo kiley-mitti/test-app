@@ -11,7 +11,6 @@ const AlertRow = ({ satAlert }) => {
   const status = err === 'critical' || err === 'caution' || err === 'serious' || err === 'normal' || err === 'standby' || err === 'off' ? err : undefined;
   return (
     <RuxTableRow selected='false' style={satAlert.complete ? { background: '#51555B' } : {}}>
-      {/* had to give checkbox a label here or else when checked it moved margins */}
       <RuxTableCell>
         <RuxCheckbox name={'cb-' + satAlert.contactName} onClick={(e) => checkChecked(e, satAlert)} disabled={satAlert.complete ? true : false} checked={satAlert.complete ? true : false} />
       </RuxTableCell>
